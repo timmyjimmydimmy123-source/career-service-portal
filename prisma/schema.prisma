@@ -1,0 +1,110 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  EDITOR
+}
+
+enum RecordStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum JobType {
+  FULL_TIME
+  PART_TIME
+  INTERNSHIP
+  APPRENTICESHIP
+}
+
+model Admin {
+  id         String    @id @default(uuid())
+  authUserId String    @unique
+  email      String    @unique
+  fullName   String
+  role       AdminRole @default(EDITOR)
+  isActive   Boolean   @default(true)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  alumniCreated    Alumni[]    @relation("AlumniCreatedBy")
+  volunteerCreated Volunteer[] @relation("VolunteerCreatedBy")
+  jobsCreated      Job[]       @relation("JobCreatedBy")
+
+  @@map("admins")
+}
+
+model Alumni {
+  id             String       @id @default(uuid())
+  fullName       String
+  graduationYear Int
+  currentTitle   String?
+  currentCompany String?
+  bio            String       @db.Text
+  photoUrl       String?
+  linkedinUrl    String?
+  industry       String?
+  status         RecordStatus @default(PUBLISHED)
+  createdById    String?
+  createdBy      Admin?       @relation("AlumniCreatedBy", fields: [createdById], references: [id])
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@index([status])
+  @@index([graduationYear])
+  @@map("alumni")
+}
+
+model Volunteer {
+  id           String       @id @default(uuid())
+  title        String
+  organization String
+  description  String       @db.Text
+  location     String?
+  isRemote     Boolean      @default(false)
+  imageUrl     String?
+  contactEmail String?
+  contactUrl   String?
+  startDate    DateTime?
+  endDate      DateTime?
+  status       RecordStatus @default(PUBLISHED)
+  createdById  String?
+  createdBy    Admin?       @relation("VolunteerCreatedBy", fields: [createdById], references: [id])
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  @@index([status])
+  @@map("volunteer_opportunities")
+}
+
+model Job {
+  id           String       @id @default(uuid())
+  title        String
+  company      String
+  description  String       @db.Text
+  location     String?
+  isRemote     Boolean      @default(false)
+  jobType      JobType      @default(FULL_TIME)
+  imageUrl     String?
+  applyUrl     String?
+  contactEmail String?
+  salaryRange  String?
+  postedDate   DateTime     @default(now())
+  expiresAt    DateTime?
+  status       RecordStatus @default(PUBLISHED)
+  createdById  String?
+  createdBy    Admin?       @relation("JobCreatedBy", fields: [createdById], references: [id])
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  @@index([status])
+  @@index([jobType])
+  @@map("jobs")
+}
