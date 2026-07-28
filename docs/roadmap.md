@@ -5,7 +5,7 @@ Ordered, focused phases. Check off as completed.
 - [x] **Phase 0** — Repo & tooling bootstrap (Next.js, TypeScript, Tailwind, shadcn/ui, folder skeleton)
 - [x] **Phase 1** — Supabase project & Prisma setup (schema, first migration, seed data)
 - [x] **Phase 2** — Supabase Auth wiring (no UI yet)
-- [ ] **Phase 3** — Public read-only list pages (alumni, volunteer, jobs)
+- [x] **Phase 3** — Public read-only list pages (alumni, volunteer, jobs)
 - [ ] **Phase 4** — Public detail pages + search/filter
 - [ ] **Phase 5** — Login page & route protection (`middleware.ts`)
 - [ ] **Phase 6** — Admin CRUD: Alumni (reference implementation)
