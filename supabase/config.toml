@@ -10,6 +10,12 @@ jwt_expiry = 3600
 enable_confirmations = true
 
 [auth.email]
+# NOTE: this "enabled" field does not map to the Email provider toggle in
+# this Supabase CLI version — `config push` silently no-ops on it. The real
+# toggle is the `external_email_enabled` field on the Management API
+# (Dashboard: Authentication -> Providers -> Email), and must be set there
+# or via `PATCH /v1/projects/{ref}/config/auth` directly.
+enabled = true
 enable_signup = false
 double_confirm_changes = true
 max_frequency = "1m0s"
