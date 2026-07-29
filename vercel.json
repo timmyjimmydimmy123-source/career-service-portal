@@ -1,0 +1,9 @@
+{
+  "framework": "nextjs",
+  "installCommand": "npm ci --legacy-peer-deps",
+  "git": {
+    "deploymentEnabled": {
+      "main": true
+    }
+  }
+}

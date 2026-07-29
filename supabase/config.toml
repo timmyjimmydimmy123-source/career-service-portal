@@ -1,0 +1,30 @@
+project_id = "career-service-portal"
+
+[auth]
+site_url = "env(NEXT_PUBLIC_SITE_URL)"
+additional_redirect_urls = [
+  "env(NEXT_PUBLIC_SITE_URL)/api/auth/callback",
+  "http://localhost:3000/api/auth/callback",
+]
+jwt_expiry = 3600
+enable_confirmations = true
+
+[auth.email]
+enable_signup = false
+double_confirm_changes = true
+max_frequency = "1m0s"
+
+# Custom email templates require SMTP to be configured — the hosted project's
+# built-in email service rejects template pushes on the free tier (400).
+# Re-enable once custom SMTP is set up (Dashboard → Auth → SMTP Settings),
+# or apply supabase/templates/*.html manually via the Dashboard in the meantime.
+# [auth.email.template.invite]
+# subject = "You've been invited to the Career & Service Portal"
+# content_path = "./supabase/templates/invite.html"
+
+# [auth.email.template.recovery]
+# subject = "Reset your Career & Service Portal password"
+# content_path = "./supabase/templates/recovery.html"
+
+[auth.rate_limit]
+email_sent = 10
