@@ -15,10 +15,6 @@ vi.mock("@/lib/supabase/server", () => ({
   })),
 }));
 
-vi.mock("next/headers", () => ({
-  headers: vi.fn(async () => new Map([["origin", "http://localhost:3000"]])),
-}));
-
 vi.mock("next/navigation", () => ({
   redirect: vi.fn((url: string) => {
     throw new Error(`REDIRECT:${url}`);
@@ -36,6 +32,7 @@ function formData(fields: Record<string, string>) {
 beforeEach(() => {
   vi.clearAllMocks();
   delete process.env.NEXT_PUBLIC_SITE_URL;
+  delete process.env.VERCEL_PROJECT_PRODUCTION_URL;
 });
 
 describe("login", () => {

@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { getSiteUrl } from "@/lib/site-url";
 import type { AdminRole } from "@prisma/client";
 
 export async function inviteAdmin(formData: FormData) {
@@ -15,7 +16,7 @@ export async function inviteAdmin(formData: FormData) {
 
   const supabase = createAdminClient();
   const { data, error } = await supabase.auth.admin.inviteUserByEmail(email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/callback?next=/reset-password`,
+    redirectTo: `${getSiteUrl()}/api/auth/callback?next=/reset-password`,
   });
 
   if (error) {
