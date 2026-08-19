@@ -1,17 +1,14 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-const { signInWithPassword, signOut, resetPasswordForEmail, updateUser } = vi.hoisted(
-  () => ({
-    signInWithPassword: vi.fn(),
-    signOut: vi.fn(),
-    resetPasswordForEmail: vi.fn(),
-    updateUser: vi.fn(),
-  }),
-);
+const { signInWithPassword, signOut, resetPasswordForEmail } = vi.hoisted(() => ({
+  signInWithPassword: vi.fn(),
+  signOut: vi.fn(),
+  resetPasswordForEmail: vi.fn(),
+}));
 
 vi.mock("@/lib/supabase/server", () => ({
   createClient: vi.fn(async () => ({
-    auth: { signInWithPassword, signOut, resetPasswordForEmail, updateUser },
+    auth: { signInWithPassword, signOut, resetPasswordForEmail },
   })),
 }));
 
@@ -21,7 +18,7 @@ vi.mock("next/navigation", () => ({
   }),
 }));
 
-import { login, logout, requestPasswordReset, updatePassword } from "@/lib/actions/auth";
+import { login, logout, requestPasswordReset } from "@/lib/actions/auth";
 
 function formData(fields: Record<string, string>) {
   const fd = new FormData();
@@ -76,26 +73,8 @@ describe("requestPasswordReset", () => {
     expect(resetPasswordForEmail).toHaveBeenCalledWith(
       "a@b.com",
       expect.objectContaining({
-        redirectTo: expect.stringContaining("/api/auth/callback?next=/reset-password"),
+        redirectTo: expect.stringContaining("/reset-password"),
       }),
     );
-  });
-});
-
-describe("updatePassword", () => {
-  it("updates password and redirects to /login on success", async () => {
-    updateUser.mockResolvedValue({ error: null });
-
-    await expect(
-      updatePassword(formData({ password: "newpassword123" })),
-    ).rejects.toThrow("REDIRECT:/login");
-  });
-
-  it("redirects back with error on failure", async () => {
-    updateUser.mockResolvedValue({ error: { message: "Weak password" } });
-
-    await expect(
-      updatePassword(formData({ password: "123" })),
-    ).rejects.toThrow("REDIRECT:/reset-password?error=Weak%20password");
   });
 });

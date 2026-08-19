@@ -29,21 +29,8 @@ export async function requestPasswordReset(formData: FormData) {
 
   const supabase = await createClient();
   await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${getSiteUrl()}/api/auth/callback?next=/reset-password`,
+    redirectTo: `${getSiteUrl()}/reset-password`,
   });
 
   redirect("/forgot-password?sent=1");
-}
-
-export async function updatePassword(formData: FormData) {
-  const password = formData.get("password") as string;
-
-  const supabase = await createClient();
-  const { error } = await supabase.auth.updateUser({ password });
-
-  if (error) {
-    redirect(`/reset-password?error=${encodeURIComponent(error.message)}`);
-  }
-
-  redirect("/login");
 }

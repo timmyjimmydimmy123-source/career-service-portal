@@ -16,7 +16,7 @@ export async function inviteAdmin(formData: FormData) {
 
   const supabase = createAdminClient();
   const { data, error } = await supabase.auth.admin.inviteUserByEmail(email, {
-    redirectTo: `${getSiteUrl()}/api/auth/callback?next=/reset-password`,
+    redirectTo: `${getSiteUrl()}/reset-password`,
   });
 
   if (error) {
