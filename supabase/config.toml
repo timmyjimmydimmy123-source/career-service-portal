@@ -1,9 +1,15 @@
 project_id = "career-service-portal"
 
 [auth]
-site_url = "env(NEXT_PUBLIC_SITE_URL)"
+# NOTE: this project's linked CLI version does not resolve env(...)
+# interpolation on push — it was pushed to Supabase as the literal string
+# "env(NEXT_PUBLIC_SITE_URL)", silently breaking the invite/reset redirect
+# for weeks. Use the real hardcoded production URL here instead. Update this
+# value (and re-run `supabase config push`, or PATCH the Management API
+# directly if push proves unreliable again) if the production domain changes.
+site_url = "https://careerportal-ten.vercel.app"
 additional_redirect_urls = [
-  "env(NEXT_PUBLIC_SITE_URL)/api/auth/callback",
+  "https://careerportal-ten.vercel.app/api/auth/callback",
   "http://localhost:3000/api/auth/callback",
 ]
 jwt_expiry = 3600
