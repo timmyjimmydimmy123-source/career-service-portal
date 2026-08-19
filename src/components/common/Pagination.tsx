@@ -26,7 +26,7 @@ export function Pagination({
   return (
     <nav
       aria-label="Pagination"
-      className="flex flex-wrap items-center justify-between gap-3 pt-2"
+      className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-card px-4 py-3 shadow-sm"
     >
       {hasPrevious ? (
         <Link href={hrefFor(page - 1)}>
